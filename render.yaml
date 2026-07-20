@@ -1,0 +1,14 @@
+# Render Blueprint — deploy the Life Expectancy API.
+# In Render: New + -> Blueprint -> connect this repo. Or configure manually
+# with the settings mirrored below (Root Directory = summative/API).
+services:
+  - type: web
+    name: life-expectancy-api
+    runtime: python
+    rootDir: summative/API
+    plan: free
+    buildCommand: "pip install -r requirements.txt"
+    startCommand: "uvicorn prediction:app --host 0.0.0.0 --port $PORT"
+    envVars:
+      - key: PYTHON_VERSION
+        value: 3.11.11
