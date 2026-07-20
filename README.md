@@ -42,10 +42,9 @@ The model with the **least loss** (Random Forest) is saved as
 ---
 
 ## 🔗 Public API endpoint (Swagger UI)
-> **Replace with your live Render URL after deploying (see below).**
 
-**Swagger UI:** `https://YOUR-APP.onrender.com/docs`
-**Prediction endpoint:** `POST https://YOUR-APP.onrender.com/predict`
+**Swagger UI:** `https://linear-regression-model-z9ly.onrender.com/docs`
+**Prediction endpoint:** `POST https://linear-regression-model-z9ly.onrender.com/predict`
 
 ## 🎥 Video demo (≤ 7 min)
 > video id

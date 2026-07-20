@@ -25,5 +25,5 @@ flutter run                 # select an Android/iOS emulator or a connected devi
 Before running, set your deployed API URL at the top of `lib/main.dart`:
 
 ```dart
-const String kApiBaseUrl = "https://your-app.onrender.com";
+const String kApiBaseUrl = "https://linear-regression-model-z9ly.onrender.com";
 ```

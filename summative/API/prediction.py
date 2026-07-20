@@ -58,7 +58,7 @@ app = FastAPI(
 # Additional origins can be supplied through the ALLOWED_ORIGINS environment variable.
 _default_origins = (
     "http://localhost,http://localhost:8080,http://127.0.0.1:8080,"
-    "https://life-expectancy-api.onrender.com"
+    "https://linear-regression-model-z9ly.onrender.com"
 )
 ALLOWED_ORIGINS = [o.strip() for o in
                    os.getenv("ALLOWED_ORIGINS", _default_origins).split(",") if o.strip()]

@@ -3,8 +3,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:http/http.dart' as http;
 
-// Base URL of the deployed prediction API (no trailing slash).
-const String kApiBaseUrl = "https://life-expectancy-api.onrender.com";
+// Base URL of the deployed prediction API.
+const String kApiBaseUrl = "https://linear-regression-model-z9ly.onrender.com";
 
 void main() => runApp(const LifeExpectancyApp());
 
