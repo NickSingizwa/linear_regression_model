@@ -4,11 +4,7 @@
 > To live each day with creativity, curiosity, and responsibility, inspiring innovation through technology and using my engineering skills to improve healthcare outcomes in Africa through digital solutions.
 
 ## Problem
-This project predicts a **country's average life expectancy (in years)** — the single most-used
-summary of population health — from its health-system and socio-economic indicators. By showing
-which levers (schooling, immunization, adult mortality, HIV/AIDS, nutrition) move the outcome, it
-becomes a decision-support tool for allocating scarce health resources across Africa. This is a
-**regression** task (continuous target), and is deliberately **not** the house-price example.
+This project predicts a **country's average life expectancy (in years)** — the single most-used summary of population health, from its health-system and socio-economic indicators. By showing which levers (schooling, immunization, adult mortality, HIV/AIDS, nutrition) move the outcome, it becomes a decision-support tool for allocating scarce health resources across Africa.
 
 ## Dataset — description & source
 **Life Expectancy (WHO)** — data compiled by the World Health Organization and the United Nations:
@@ -41,76 +37,50 @@ The model with the **least loss** (Random Forest) is saved as
 
 ---
 
-## 🔗 Public API endpoint (Swagger UI)
+## Public API endpoint (Swagger UI)
 
 **Swagger UI:** `https://linear-regression-model-z9ly.onrender.com/docs`
 **Prediction endpoint:** `POST https://linear-regression-model-z9ly.onrender.com/predict`
 
-## 🎥 Video demo (≤ 7 min)
+## 🎥 Video demo link
 > video id
 
 ---
 
-## Repository structure
-```
-linear_regression_model/
-├── README.md
-├── render.yaml                       # Render deploy blueprint
-└── summative/
-    ├── pyproject.toml                # uv project (deps)
-    ├── uv.lock                       # locked dependency versions
-    ├── linear_regression/
-    │   ├── multivariate.ipynb        # Task 1 — EDA, models, loss curves, saved model
-    │   ├── Life_Expectancy_Data.csv  # dataset
-    │   └── plot_*.png                # exported visualizations
-    ├── API/
-    │   ├── prediction.py             # Task 2 — FastAPI (predict + retrain + CORS)
-    │   ├── requirements.txt
-    │   ├── best_model.pkl            # saved best model (scaler + Random Forest)
-    │   └── training_data.csv         # snapshot used by /retrain
-    └── FlutterApp/
-        ├── lib/main.dart             # Task 3 — single-page prediction UI
-        └── pubspec.yaml
-```
-
-## Run the notebook (Task 1) — with uv
+## Run the notebook with uv
 ```bash
 cd summative
 uv sync                 # creates .venv from uv.lock
 uv run jupyter notebook linear_regression/multivariate.ipynb
 ```
 
-## Run the API locally (Task 2)
+## Run the API locally
 ```bash
 cd summative/API
 uv run uvicorn prediction:app --reload      # or: pip install -r requirements.txt && uvicorn prediction:app --reload
 # open http://127.0.0.1:8000/docs
 ```
 
-## Deploy the API on Render
-1. Push this repo to GitHub.
-2. Render → **New +** → **Web Service** → connect the repo.
-3. Set **Root Directory** = `summative/API`.
-4. **Build command:** `pip install -r requirements.txt`
-5. **Start command:** `uvicorn prediction:app --host 0.0.0.0 --port $PORT`
-6. Deploy. Your Swagger UI will be at `https://YOUR-APP.onrender.com/docs`.
-7. Put that URL in this README (above) and in `FlutterApp/lib/main.dart` (`kApiBaseUrl`).
+## Run the mobile app
+From the repo root:
 
-## Run the mobile app (Task 3)
-The `FlutterApp/` folder contains the source (`lib/main.dart`, `pubspec.yaml`). To run it:
-```bash
-# 1. Scaffold platform folders (Flutter must be installed):
-flutter create life_expectancy_app
-# 2. Copy the two source files into the new project:
-cp FlutterApp/lib/main.dart life_expectancy_app/lib/main.dart
-cp FlutterApp/pubspec.yaml   life_expectancy_app/pubspec.yaml
-cd life_expectancy_app
-# 3. Set your Render URL inside lib/main.dart  ->  const kApiBaseUrl = "https://YOUR-APP.onrender.com";
+cd summative/FlutterApp
+
+Set your deployed API URL at the top of `lib/main.dart`:
+
+const String kApiBaseUrl = "https://linear-regression-model-z9ly.onrender.com";
+
+If the platform folders (android/, ios/) are not present, generate them first:
+
+flutter create .
+
+Then fetch packages and launch on a connected emulator or device:
+
 flutter pub get
-flutter run                 # choose an emulator or a connected device
-```
-Enter the 8 indicator values, tap **Predict**, and the predicted life expectancy (or a validation
-error) appears below the form.
+flutter run
+
+Enter the 8 indicator values, tap **Predict**, and the predicted life
+expectancy (or a validation error) appears below the form.
 
 ## API — CORS configuration reasoning
 CORS is scoped deliberately (no wildcard): **origins** are limited to the hosted Swagger UI and local
@@ -120,7 +90,7 @@ Flutter-web dev origins (a native mobile app sends no `Origin` header, so it is 
 third-party websites from calling the API from a user's browser while allowing every legitimate
 client. Extra origins can be added via the `ALLOWED_ORIGINS` environment variable on Render.
 
-## Retraining (API Deployment Update)
+## Retraining
 `POST /retrain` accepts a CSV upload of new rows (8 features + `Life expectancy`). It appends them to
 the stored data, retrains the Random Forest, evaluates on a hold-out split, then **hot-swaps** the
 live model and `best_model.pkl` — so predictions immediately use the updated model with no redeploy.
