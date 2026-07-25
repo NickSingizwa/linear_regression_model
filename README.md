@@ -43,7 +43,7 @@ The model with the **least loss** (Random Forest) is saved as
 **Prediction endpoint:** `POST https://linear-regression-model-z9ly.onrender.com/predict`
 
 ## 🎥 Video demo link
-> video id
+https://youtu.be/6UzYDdMV7Ag
 
 ---
 
